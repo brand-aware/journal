@@ -1,9 +1,8 @@
 /**
  * 
- * @author mike802
+ * @author wontzer
  *
- * brand_aware
- * ??? - 2019
+ * 2019
  * 
  */
 package core;
