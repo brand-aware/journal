@@ -219,7 +219,7 @@ public class Screen extends CommonScreen{
 	
 	private void doLoadEntryList(int selection) throws IOException {
 		entryList = loadTitles(selection);
-		if(entryList != null) {
+		if(entryList != null && entryList[0].compareTo("<empty>") != 0) {
 			titleList = new JList<String>(entryList);
 			titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			titleList.setFont(new Font("courier", Font.BOLD, 20));

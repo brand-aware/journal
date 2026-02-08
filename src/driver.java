@@ -13,17 +13,13 @@ import core.Screen;
 
 public class driver {
 	
-	public static void main(String[] args) {
-		if(args.length < 2) {
-			System.out.println("java driver <current dir> <user dir>");
-			System.exit(0);
-		}
-		System.out.println(args[0] + "\n" + args[1]);
-		
+	public static void main(String[] args) {		
 		Properties properties;
 		Screen screen;
+		String currentDir = System.getProperty("user.dir");
+		String userDir = System.getProperty("user.home");
 		try {
-			properties = new Properties(args[0], args[1]);
+			properties = new Properties(currentDir, userDir);
 			screen = new Screen(properties);
 			screen.init();
 		} catch (IOException e1) {
