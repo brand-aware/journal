@@ -1,6 +1,6 @@
 /**
  * 
- * @author mike802
+ * @author wontzer
  *
  * brand_aware
  * ??? - 2019
@@ -16,7 +16,9 @@ public class driver {
 	public static void main(String[] args) {		
 		Properties properties;
 		Screen screen;
+		// Current working directory so properties can find image dir
 		String currentDir = System.getProperty("user.dir");
+		// Windows only allows writing to user directory
 		String userDir = System.getProperty("user.home");
 		try {
 			properties = new Properties(currentDir, userDir);

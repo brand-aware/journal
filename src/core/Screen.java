@@ -2,7 +2,7 @@
  * 
  * @author wontzer
  *
- * 2019
+ * 2019 - brand-aware
  * 
  */
 package core;

@@ -1,8 +1,8 @@
 /**
  * 
- * @author mike802
+ * @author wontzer
  *
- * brand_aware
+ * brand-aware
  * ??? - 2019
  * 
  */
