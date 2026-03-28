@@ -28,6 +28,14 @@ public class IOScreen extends StringConverter{
 		properties = p;
 	}
 	
+	/**
+	 * Creates a list of all "titles" of journal
+	 * entries found on disk.  If none are found, returns
+	 * one item list "<empty>"
+	 * 
+	 * @return ArrayList<String> titles
+	 * @throws IOException
+	 */
 	public ArrayList<String> loadAllTitles() throws IOException {
 		File file = new File(properties.getEntryTitlesPath());
 		if(!file.exists()) {
@@ -49,9 +57,17 @@ public class IOScreen extends StringConverter{
 		if(!empty) {
 			return titles;
 		}
-		return null;
+		titles.add("<empty>");
+		return titles;
 	}
 	
+	/**
+	 * Returns a map of journal entries indexed by their titles.
+	 * "<empty>", "<tbd>" returned if none are found.
+	 * 
+	 * @return ConcurrentHashMap<String, String> entries
+	 * @throws IOException
+	 */
 	public ConcurrentHashMap<String, String> loadAllEntries() throws IOException{
 		ConcurrentHashMap<String, String> entryMap = new ConcurrentHashMap<String, String>();
 		File file = new File(properties.getEntriesPath());
@@ -78,9 +94,17 @@ public class IOScreen extends StringConverter{
 		if(!empty) {
 			return entryMap;
 		}
-		return null;
+		entryMap.put("<empty>", "<tbd>");
+		return entryMap;
 	}
 	
+	/**
+	 * Loads a list of filter items for use with the journal
+	 * entry search tool.  "month", "year", etc.
+	 * 
+	 * @return String[] list
+	 * @throws Exception
+	 */
 	public String[] loadFilters() throws Exception{
 		File file = new File(properties.getFiltersPath());
 		if(!file.exists()) {
@@ -99,6 +123,13 @@ public class IOScreen extends StringConverter{
 		return list;
 	}
 	
+	/**
+	 * Takes the buffered list of all journal entries and titles
+	 * and writes to disk.
+	 * 
+	 * @param ConcurrentHashMap<String, String> entryMap
+	 * @throws IOException
+	 */
 	public void saveAllEntries(ConcurrentHashMap<String, String> entryMap) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(properties.getEntriesPath()));
 		Iterator<String> titles = entryMap.keySet().iterator();
@@ -119,6 +150,13 @@ public class IOScreen extends StringConverter{
 		writer.close();
 	}
 	
+	/**
+	 * From the list of all journal entries and titles, writes just
+	 * the titles to a seperate file on disk for easy access later.
+	 * 
+	 * @param ConcurrentHashMap<String, String> entryMap
+	 * @throws IOException
+	 */
 	public void saveAllTitles(ConcurrentHashMap<String, String> entryMap) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(properties.getEntryTitlesPath()));
 		Iterator<String> titles = entryMap.keySet().iterator();
@@ -129,6 +167,8 @@ public class IOScreen extends StringConverter{
 				list.add(title);
 			}
 		}
+		
+		//sorts list (by date)
 		for(int x = 0; x < list.size(); x++) {
 			for(int y = 0; y < list.size(); y++) {
 				String temp = list.get(y);
