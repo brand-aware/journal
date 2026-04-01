@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 
 public class Screen extends CommonScreen{
 	
+	// GUI action helper classes
 	ButtonHandler handler;
 	ListSelectionHandler listHandler;
 	
@@ -43,6 +44,7 @@ public class Screen extends CommonScreen{
 		
 	public Screen(Properties p) throws IOException {
 		properties = p;
+		// Java data/time for timestamping journal entries
 		calendar = Calendar.getInstance();
 		ioScreen = new IOScreen(properties);
 		handler = new ButtonHandler();
@@ -50,6 +52,12 @@ public class Screen extends CommonScreen{
 		entryMap = ioScreen.loadAllEntries();
 	}
 	
+	/**
+	 * Initializes GUI page.  First loads screen with logo (that
+	 * must be clicked to continue), then displays list of recent
+	 * journal entries.  New entry loads in place.  Clicking an entry
+	 * loads view screen in place.
+	 */
 	private void createPage() {
 		screen = new JFrame("journal");
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,6 +93,10 @@ public class Screen extends CommonScreen{
 		
 	}
 	
+	/**
+	 * Handles ALL possible buttons from any screen associated with
+	 * the display (opening, list of entries, new entry, entry reader)
+	 */
 	private class ButtonHandler implements ActionListener{
 
 		@Override
@@ -179,6 +191,9 @@ public class Screen extends CommonScreen{
 		}
 	}
 	
+	/**
+	 * Handles actions on the selectable list of journal entries
+	 */
 	private class ListSelectionHandler implements ListSelectionListener{
 
 		@Override
@@ -203,6 +218,10 @@ public class Screen extends CommonScreen{
 		}
 	}
 	
+	/**
+	 * Adds new entry to internal cached entries with date
+	 * as index
+	 */
 	private void addEntry() {
 		String entry = entryTextView.getText();
 		String title = dateDisplay.getText();
@@ -212,10 +231,22 @@ public class Screen extends CommonScreen{
 		entryMap.put(title, entry);
 	}
 	
+	/**
+	 * Loads list of journal entries without a selection
+	 * 
+	 * @throws IOException
+	 */
 	private void doLoadEntryList() throws IOException {
 		doLoadEntryList(0);
 	}
 	
+	/**
+	 * Creates selectable list of journal entries sorted by date.
+	 * "titles" used for display.
+	 * 
+	 * @param int selection
+	 * @throws IOException
+	 */
 	private void doLoadEntryList(int selection) throws IOException {
 		entryList = loadTitles(selection);
 		if(entryList != null && entryList[0].compareTo("<empty>") != 0) {
@@ -241,6 +272,14 @@ public class Screen extends CommonScreen{
 		entryViewer.setBounds(currentX, currentY, ENTRY_SCROLL_WIDTH, ENTRY_SCROLL_HEIGHT);
 	}
 	
+	/**
+	 * Creates a list of just the "titles" or timestamps from all
+	 * journal entries, filtered by chosen filter from GUI selector.
+	 * 
+	 * @param selection
+	 * @return
+	 * @throws IOException
+	 */
 	private String[] loadTitles(int selection) throws IOException {
 		ArrayList<String> titles = ioScreen.loadAllTitles();
 		Calendar calendar = Calendar.getInstance();
@@ -275,15 +314,36 @@ public class Screen extends CommonScreen{
 		}
 		return list;
 	}
+	
+	/**
+	 * Parses out month from given line
+	 * 
+	 * @param String line
+	 * @return Sting month
+	 */
 	private String getTokenMonth(String line) {
 		String[] lineSplit = line.split(" - ");
 		return lineSplit[2];
 	}
+	
+	/**
+	 * Parses out year from given line
+	 * 
+	 * @param String line
+	 * @return String year
+	 */
 	private String getTokenYear(String line) {
 		String[] lineSplit = line.split(" - ");
 		return lineSplit[1];
 	}
 	
+	/**
+	 * Loads main page to display all (filtered) journal entries.
+	 * If uninitialized, initializes all components except selectable
+	 * entries.
+	 * 
+	 * @throws Exception
+	 */
 	private void doDisplayEntries() throws Exception {		
 		int currentX;
 		int currentY = BACKGROUND_HEIGHT - ENTRY_SCROLL_HEIGHT - 50 - 5;
@@ -322,6 +382,12 @@ public class Screen extends CommonScreen{
 		layeredPane.moveToFront(altLogo);
 	}
 	
+	/**
+	 * Retrieves selected journal entry from cached data structure
+	 * of entries and passes to loading method.
+	 * 
+	 * @param selection
+	 */
 	private void loadEntry(int selection) {
 		String key = entryList[selection];
 		if(entryMap != null) {
@@ -332,6 +398,13 @@ public class Screen extends CommonScreen{
 		}
 	}
 	
+	/**
+	 * Displays selected entry in GUI window with approperiate
+	 * navigation controls.
+	 * 
+	 * @param title
+	 * @param entry
+	 */
 	private void loadEntry(String title, String entry) {
 		createEntryView(entry);
 		entryTextView.setText(entry);
@@ -354,6 +427,12 @@ public class Screen extends CommonScreen{
 		layeredPane.moveToFront(close);
 	}
 	
+	/**
+	 * If uninitialized, initializes all components necessary for a 
+	 * scrollable view of journal entry, title, and navigation
+	 * 
+	 * @param String entry
+	 */
 	private void createEntryView(String entry) {
 		int currentX = (BACKGROUND_WIDTH / 2) - (ENTRY_VIEW_WIDTH / 2) - 5;
 		int currentY = 100;
@@ -407,6 +486,13 @@ public class Screen extends CommonScreen{
 		}
 	}
 	
+	/**
+	 * Refreshes display and navigates from new post screen
+	 * to main display of all journal entries.
+	 * 
+	 * @param String title
+	 * @param String entry
+	 */
 	private void loadEntryNewPost(String title, String entry) {
 		layeredPane.moveToFront(background);
 		layeredPane.moveToBack(newPost);
@@ -426,6 +512,12 @@ public class Screen extends CommonScreen{
 		layeredPane.moveToFront(close);
 	}
 	
+	/**
+	 * Initializes all uninitialized components required to display a 
+	 * "new entry".  Save and close possible actions.
+	 * 
+	 * @param String entry
+	 */
 	private void createEntryViewNewPost(String entry) {
 		int currentX = (BACKGROUND_WIDTH / 2) - (ENTRY_VIEW_WIDTH / 2) - 5;
 		int currentY = 100;
@@ -470,6 +562,11 @@ public class Screen extends CommonScreen{
 		}
 	}
 	
+	/**
+	 * Creates formatted timestamp from Java time and updates
+	 * display field
+	 * 
+	 */
 	private void updateTitle() {
 		String dateText = "";
 		calendar = Calendar.getInstance();
@@ -502,6 +599,12 @@ public class Screen extends CommonScreen{
 		dateDisplay.setText(dateText);
 	}
 	
+	/**
+	 * Navigates GUI from "new entry" back to main page displaying
+	 * list of all entries
+	 * 
+	 * @throws Exception
+	 */
 	private void hideNewPost() throws Exception {
 		layeredPane.moveToFront(background);
 		layeredPane.moveToBack(dateDisplay);
@@ -512,6 +615,12 @@ public class Screen extends CommonScreen{
 		doDisplayEntries();
 	}
 	
+	/**
+	 * Navigates GUI from "display entry" back to main page
+	 * displaying list of all entries.
+	 * 
+	 * @throws Exception
+	 */
 	private void hideShowPost() throws Exception {
 		layeredPane.moveToFront(background);
 		layeredPane.moveToBack(dateDisplay);
@@ -523,6 +632,9 @@ public class Screen extends CommonScreen{
 		doDisplayEntries();
 	}
 	
+	/**
+	 * Creates GUI page
+	 */
 	public void init() {
 		if(!initialized) {
 			createPage();
