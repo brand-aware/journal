@@ -10,16 +10,17 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Properties {
 	
 	private String root;
 
-	private String background;
-	private String logo;
-	private String altLogo;
-	private String company;
-	private String company_iframe;
+	private URL background;
+	private URL logo;
+	private URL altLogo;
+	private URL company;
+	private URL company_iframe;
 	
 	private String entryTitlesPath;
 	private String entriesPath;
@@ -30,11 +31,11 @@ public class Properties {
 	
 	public Properties(String path, String userDir) throws IOException {
 		root = path;		
-		background = root + File.separator + "img" + File.separator + "background.png";
-		logo = root + File.separator + "img" + File.separator + "logo.png";
-		altLogo = root + File.separator + "img" + File.separator + "alt_logo.png";
-		company = root + File.separator + "img" + File.separator + "company.png";
-		company_iframe = root + File.separator + "img" + File.separator + "company_iframe";
+		background = getClass().getResource("/img/background.png");
+		logo = getClass().getResource("/img/logo.png");
+		altLogo = getClass().getResource("/img/alt_logo.png");
+		company = getClass().getResource("/img/company.png");
+		company_iframe = getClass().getResource("/img/company_iframe");
 		filtersPath = root + File.separator + "data" + File.separator + "filters.txt";
 		
 		//changes included to meet new Windows requirements
@@ -57,19 +58,19 @@ public class Properties {
 	public String getRoot() {
 		return root;
 	}
-	public String getBackground() {
+	public URL getBackground() {
 		return background;
 	}
-	public String getLogo() {
+	public URL getLogo() {
 		return logo;
 	}
-	public String getAltLogo() {
+	public URL getAltLogo() {
 		return altLogo;
 	}
-	public String getCompany() {
+	public URL getCompany() {
 		return company;
 	}
-	public String getCompanyIFrame() {
+	public URL getCompanyIFrame() {
 		return company_iframe;
 	}
 	public String getEntryTitlesPath() {

@@ -249,7 +249,7 @@ public class Screen extends CommonScreen{
 	 */
 	private void doLoadEntryList(int selection) throws IOException {
 		entryList = loadTitles(selection);
-		if(entryList != null && entryList[0].compareTo("<empty>") != 0) {
+		if(entryList != null && entryList.length > 0 && entryList[0].compareTo("<empty>") != 0) {
 			titleList = new JList<String>(entryList);
 			titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			titleList.setFont(new Font("courier", Font.BOLD, 20));
@@ -266,6 +266,7 @@ public class Screen extends CommonScreen{
 			lsm.addListSelectionListener(listHandler);
 			entryViewer = new JScrollPane(titleList);
 			entryViewer.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			layeredPane.add(entryViewer);
 		}
 		int currentX = (BACKGROUND_WIDTH / 2) - (ENTRY_SCROLL_WIDTH / 2) - 5;
 		int currentY = BACKGROUND_HEIGHT - ENTRY_SCROLL_HEIGHT - 50 - 5;
