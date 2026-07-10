@@ -14,8 +14,6 @@ import java.net.URL;
 
 public class Properties {
 	
-	private String root;
-
 	private URL background;
 	private URL logo;
 	private URL altLogo;
@@ -24,19 +22,18 @@ public class Properties {
 	
 	private String entryTitlesPath;
 	private String entriesPath;
-	private String filtersPath;
+	private URL filtersPath;
 	
 	private final String SEPERATOR = "##!#";
 	private final String NULL_ENTRY_LIST = "<create new entry>";
 	
 	public Properties(String path, String userDir) throws IOException {
-		root = path;		
 		background = getClass().getResource("/img/background.png");
 		logo = getClass().getResource("/img/logo.png");
 		altLogo = getClass().getResource("/img/alt_logo.png");
 		company = getClass().getResource("/img/company.png");
 		company_iframe = getClass().getResource("/img/company_iframe");
-		filtersPath = root + File.separator + "data" + File.separator + "filters.txt";
+		filtersPath = getClass().getResource("/data/filters.txt");
 		
 		//changes included to meet new Windows requirements
 		String appData = userDir + File.separator + "AppData" + File.separator + "Local";
@@ -55,9 +52,6 @@ public class Properties {
 		entriesPath = productData + File.separator + "entries";
 	}
 	
-	public String getRoot() {
-		return root;
-	}
 	public URL getBackground() {
 		return background;
 	}
@@ -78,9 +72,6 @@ public class Properties {
 	}
 	public String getEntriesPath() {
 		return entriesPath;
-	}
-	public String getFiltersPath() {
-		return filtersPath;
 	}
 	public String getSeperatorString() {
 		return SEPERATOR;

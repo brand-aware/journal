@@ -290,18 +290,22 @@ public class Screen extends CommonScreen{
 		for(int x = 0; x < titles.size(); x++) {
 			if(selection == 1) {
 				String token = getTokenYear(titles.get(x));
-				if(Integer.parseInt(token) != year) {
-					titles.remove(x);
-					x--;
+				if(token.compareTo("<create new entry>") != 0) {
+					if(Integer.parseInt(token) != year) {
+						titles.remove(x);
+						x--;
+					}
 				}
 			}else if(selection == 2) {
 				String token = getTokenMonth(titles.get(x));
-				if(token.startsWith("" + 0)) {
-					token = token.substring(1, token.length());
-				}
-				if(Integer.parseInt(token) != month) {
-					titles.remove(x);
-					x--;
+				if(token.compareTo("<create new entry>") != 0) {
+					if(token.startsWith("" + 0)) {
+						token = token.substring(1, token.length());
+					}
+					if(Integer.parseInt(token) != month) {
+						titles.remove(x);
+						x--;
+					}
 				}
 			}
 		}
@@ -323,8 +327,13 @@ public class Screen extends CommonScreen{
 	 * @return Sting month
 	 */
 	private String getTokenMonth(String line) {
-		String[] lineSplit = line.split(" - ");
-		return lineSplit[2];
+		if(line.length() > 0 && line.contains("-")) {
+			String[] lineSplit = line.split(" - ");
+			return lineSplit[2];
+		}
+		else {
+			return "<create new entry>";
+		}
 	}
 	
 	/**
@@ -334,8 +343,13 @@ public class Screen extends CommonScreen{
 	 * @return String year
 	 */
 	private String getTokenYear(String line) {
-		String[] lineSplit = line.split(" - ");
-		return lineSplit[1];
+		if(line.length() > 0 && line.contains("-")) {
+			String[] lineSplit = line.split(" - ");
+			return lineSplit[1];
+		}
+		else {
+			return "<create new entry>";
+		}
 	}
 	
 	/**

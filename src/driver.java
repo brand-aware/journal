@@ -16,7 +16,7 @@ public class driver {
 	public static void main(String[] args) {		
 		Properties properties;
 		Screen screen;
-		// Current working directory so properties can find image dir
+		// Current working directory so properties can find filters dir
 		String currentDir = System.getProperty("user.dir");
 		// Windows only allows writing to user directory
 		String userDir = System.getProperty("user.home");

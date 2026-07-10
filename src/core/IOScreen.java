@@ -106,20 +106,7 @@ public class IOScreen extends StringConverter{
 	 * @throws Exception
 	 */
 	public String[] loadFilters() throws Exception{
-		File file = new File(properties.getFiltersPath());
-		if(!file.exists()) {
-			System.exit(0);
-		}
-		String[] list = new String[3];
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		int position = 0;
-		while(reader.ready()) {
-			String line = reader.readLine();
-			line = decryptString(line);
-			list[position] = line;
-			position++;
-		}
-		reader.close();
+		String[] list = new String[]{"all", "year", "month"};
 		return list;
 	}
 	
